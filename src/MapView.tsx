@@ -1,12 +1,16 @@
 import { useEffect, useRef } from 'react'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { AttributionControl, Map as MapLibre, Marker, NavigationControl, Popup, type ExpressionSpecification, type FilterSpecification, type GeoJSONSource, type MapMouseEvent } from 'maplibre-gl'
+import { AttributionControl, Map as MapLibre, Marker, NavigationControl, Popup, setWorkerUrl, type ExpressionSpecification, type FilterSpecification, type GeoJSONSource, type MapMouseEvent } from 'maplibre-gl'
 import type { Feature, FeatureCollection, Geometry, Polygon } from 'geojson'
 import { circle, cityView, loadedArea, type Bounds } from './geo'
 import { initials, money, textOn } from './format'
 import { placeCategories, type PlaceCategory, type ReachMinutes } from './layers'
 import { OTHER_CHAIN, type ChainMarker } from './access'
+// MapLibre 6 looks for its worker beside its own module, which a Vite build does not emit; bundle it and say where.
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 import type { Coordinates, Listing, ParkPolygon, Place, ReachArea, Route, TransitData, TransitMode } from './types'
+
+setWorkerUrl(workerUrl)
 
 type Theme = 'light' | 'dark'
 const STYLES: Record<Theme, string> = { light: 'https://tiles.openfreemap.org/styles/positron', dark: 'https://tiles.openfreemap.org/styles/dark' }
